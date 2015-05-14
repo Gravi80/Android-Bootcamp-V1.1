@@ -1,6 +1,7 @@
 package bootcamp.android.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -11,12 +12,18 @@ import android.widget.GridView;
 import java.util.List;
 
 import bootcamp.android.R;
+
 import bootcamp.android.adapters.ShoppingItemsListAdapter;
 import bootcamp.android.models.Product;
 import bootcamp.android.repositories.ProductRepository;
-import static bootcamp.android.constants.Constants.*;
+
+import static bootcamp.android.constants.Constants.DESCRIPTION_KEY;
+import static bootcamp.android.constants.Constants.IMAGE_URL_KEY;
+import static bootcamp.android.constants.Constants.TITLE_KEY;
 
 public class ShoppingItemsListingActivity extends Activity {
+
+  private List<Product> products;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -26,10 +33,24 @@ public class ShoppingItemsListingActivity extends Activity {
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
     StrictMode.setThreadPolicy(policy);
 
-    ProductRepository productRepository = new ProductRepository();
-    List<Product> products = productRepository.getProducts();
-    GridView gridView = (GridView) findViewById(R.id.grid_view);
-    gridView.setAdapter(new ShoppingItemsListAdapter(this, products));
+    final ProgressDialog progressDialog = ProgressDialog.show(this, "", "Loading...", true, true);
+    final GridView gridView = (GridView) findViewById(R.id.grid_view);
+
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        ProductRepository productRepository = new ProductRepository();
+        products = productRepository.getProducts();
+        runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            gridView.setAdapter(new ShoppingItemsListAdapter(ShoppingItemsListingActivity.this, products));
+            progressDialog.dismiss();
+          }
+        });
+      }
+    }).start();
+    
     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
