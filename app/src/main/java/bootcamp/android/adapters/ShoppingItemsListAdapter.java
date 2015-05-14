@@ -12,15 +12,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidplugins.Callback;
+import androidplugins.imagefetcher.ImageFetcher;
 import bootcamp.android.R;
 import bootcamp.android.models.Product;
-import bootcamp.android.services.ImageDownloader;
 
 public class ShoppingItemsListAdapter extends BaseAdapter {
   private final Context context;
   public List<Product> products = new ArrayList<>();
 
-  public ShoppingItemsListAdapter(Context context, List<Product> products){
+  public ShoppingItemsListAdapter(Context context, List<Product> products) {
     this.context = context;
     this.products = products;
   }
@@ -43,18 +44,26 @@ public class ShoppingItemsListAdapter extends BaseAdapter {
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
-    if(convertView == null) {
+    if (convertView == null) {
       convertView = LayoutInflater.from(context).inflate(R.layout.product, parent, false);
     }
     ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
     TextView titleTextView = (TextView) convertView.findViewById(R.id.title);
     Product product = products.get(position);
     titleTextView.setText(product.getTitle());
-    ImageDownloader imageDownloader = new ImageDownloader();
-    Bitmap bitmap = imageDownloader.downloadImage(product.getImageUrl());
-    imageView.setImageBitmap(bitmap);
+    ImageFetcher imageFetcher = new ImageFetcher(bitmapCallback(imageView), context);
+    imageFetcher.execute(product.getImageUrl());
 
     return convertView;
+  }
+
+  private Callback<Bitmap> bitmapCallback(final ImageView imageView) {
+    return new Callback<Bitmap>() {
+      @Override
+      public void execute(Bitmap object) {
+        imageView.setImageBitmap(object);
+      }
+    };
   }
 
 }
