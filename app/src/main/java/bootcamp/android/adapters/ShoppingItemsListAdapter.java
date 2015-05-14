@@ -1,6 +1,7 @@
 package bootcamp.android.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import bootcamp.android.R;
 import bootcamp.android.models.Product;
+import bootcamp.android.services.ImageDownloader;
 
 public class ShoppingItemsListAdapter extends BaseAdapter {
   private final Context context;
@@ -48,7 +50,9 @@ public class ShoppingItemsListAdapter extends BaseAdapter {
     TextView titleTextView = (TextView) convertView.findViewById(R.id.title);
     Product product = products.get(position);
     titleTextView.setText(product.getTitle());
-    imageView.setImageResource(product.getDrawable());
+    ImageDownloader imageDownloader = new ImageDownloader();
+    Bitmap bitmap = imageDownloader.downloadImage(product.getImageUrl());
+    imageView.setImageBitmap(bitmap);
 
     return convertView;
   }

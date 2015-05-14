@@ -3,6 +3,7 @@ package bootcamp.android.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -21,6 +22,10 @@ public class ShoppingItemsListingActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
+
+    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+    StrictMode.setThreadPolicy(policy);
+
     ProductRepository productRepository = new ProductRepository();
     List<Product> products = productRepository.getProducts();
     GridView gridView = (GridView) findViewById(R.id.grid_view);
@@ -32,7 +37,7 @@ public class ShoppingItemsListingActivity extends Activity {
         Intent intent = new Intent(getApplicationContext(), ProductDetailsActivity.class);
         intent.putExtra(TITLE_KEY, product.getTitle());
         intent.putExtra(DESCRIPTION_KEY, product.getDescription());
-        intent.putExtra(DRAWABLE_KEY, product.getDrawable());
+        intent.putExtra(IMAGE_URL_KEY, product.getImageUrl());
         startActivity(intent);
       }
     });
