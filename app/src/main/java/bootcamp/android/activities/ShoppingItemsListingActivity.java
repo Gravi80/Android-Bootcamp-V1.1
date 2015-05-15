@@ -9,6 +9,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import bootcamp.android.R;
+import bootcamp.android.adapters.CustomAdapter;
 import bootcamp.android.models.Product;
 import bootcamp.android.repositories.ProductRepository;
 
@@ -26,6 +27,7 @@ public class ShoppingItemsListingActivity extends Activity {
         GridView layout = (GridView) findViewById(R.id.listofitems);
         List<Product> products  = productRepository.getProducts();
 //        android.R.layout.simple_list_item_1  -> default Layout resource
-        layout.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, products));
+//        layout.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, products));
+        layout.setAdapter(new CustomAdapter(this,products));
     }
 }
