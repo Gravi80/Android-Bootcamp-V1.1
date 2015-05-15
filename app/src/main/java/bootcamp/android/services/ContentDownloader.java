@@ -1,5 +1,7 @@
 package bootcamp.android.services;
 
+import android.os.AsyncTask;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -13,7 +15,6 @@ import java.io.InputStreamReader;
 public class ContentDownloader {
 
     public String fetchResponse(String endpoint) {
-
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(endpoint);
         String strJSONData;
@@ -23,14 +24,14 @@ public class ContentDownloader {
             resp = httpClient.execute(httpGet);
             strJSONData = processEntity(resp.getEntity());
 
-			return strJSONData;
+            return strJSONData;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-	private String processEntity(HttpEntity entity)
+    private String processEntity(HttpEntity entity)
             throws IllegalStateException, IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(entity
@@ -42,4 +43,9 @@ public class ContentDownloader {
         br.close();
         return result;
     }
+
+//    @Override
+//    protected String doInBackground(String... params) {
+//        return fetchResponse(params[0]);
+//    }
 }
