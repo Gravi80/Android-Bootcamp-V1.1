@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Environment;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -13,10 +14,17 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.sql.Time;
+import java.util.Date;
 
 import androidplugins.Callback;
 
@@ -55,6 +63,16 @@ public class ImageFetcher extends AsyncTask<String, Void, Bitmap> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        File externalCacheDir = this.context.getExternalCacheDir();
+
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(externalCacheDir + "/file_"+System.currentTimeMillis());
+            imageBitmap.compress(Bitmap.CompressFormat.PNG,100,fileOutputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         return imageBitmap;
     }
 
