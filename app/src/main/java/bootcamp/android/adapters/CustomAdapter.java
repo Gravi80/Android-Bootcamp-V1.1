@@ -53,7 +53,8 @@ public class CustomAdapter extends BaseAdapter {
 
         title.setText(this.elements.get(position).getTitle());
 
-        image.setImageBitmap(BitmapFactory.decodeResource(activity.getResources(),this.elements.get(position).getDrawable()));
+//        image.setImageBitmap(BitmapFactory.decodeResource(activity.getResources(), this.elements.get(position).getDrawable()));
+        image.setImageResource(this.elements.get(position).getDrawable());
         return view;
     }
 }
