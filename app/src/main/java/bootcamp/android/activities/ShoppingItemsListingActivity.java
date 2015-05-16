@@ -49,12 +49,13 @@ public class ShoppingItemsListingActivity extends Activity {
 
   private void renderProducts(GridView gridView, ArrayList<Product> products) {
     gridView.setAdapter(new ShoppingItemsListAdapter(this, products));
+    final Intent intent = new Intent(getApplicationContext(), ProductDetailsActivity.class);
+    intent.putExtra("products",products);
     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Product product = (Product) adapterView.getAdapter().getItem(position);
-                Intent intent = new Intent(getApplicationContext(), ProductDetailsActivity.class);
-                intent.putExtra(PRODUCT_KEY, product);
+//        Product product = (Product) adapterView.getAdapter().getItem(position);
+                intent.putExtra("current_product_id", position);
                 startActivity(intent);
       }
     });

@@ -23,7 +23,7 @@ public class ProductDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View productDetailsView = inflater.inflate(R.layout.product_details, container, false);
-        Product product = getArguments().getParcelable(PRODUCT_KEY);
+        Product product = getArguments().getParcelable("current_product");
         TextView imageTitle = (TextView) productDetailsView.findViewById(R.id.product_title);
         imageTitle.setText(product.getTitle());
         ImageView imageView = (ImageView) productDetailsView.findViewById(R.id.product_image);
