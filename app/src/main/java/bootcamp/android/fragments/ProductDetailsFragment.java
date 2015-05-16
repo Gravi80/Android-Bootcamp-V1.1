@@ -17,6 +17,7 @@ import bootcamp.android.models.Product;
 
 import static bootcamp.android.constants.Constants.PRODUCT_KEY;
 
+// don't overload the constructor of fragment
 public class ProductDetailsFragment extends Fragment {
 
     @Override

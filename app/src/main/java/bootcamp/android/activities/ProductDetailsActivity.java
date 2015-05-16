@@ -42,5 +42,6 @@ public class ProductDetailsActivity extends FragmentActivity {
     ProductDetailsPagerAdapter productDetailsPagerAdapter = new ProductDetailsPagerAdapter(fragManager,products);
     ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
     viewPager.setAdapter(productDetailsPagerAdapter);
+    viewPager.setCurrentItem(getIntent().getIntExtra("current_product_id", 0));
   }
 }
